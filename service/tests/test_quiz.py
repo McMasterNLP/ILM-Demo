@@ -8,7 +8,15 @@ def _unlock(client):
     )
 
 def _start(client):
-    return client.post(f"{PREFIX}/quiz/yusuf/attempts", headers=learner(client)).json()
+    response = client.post(
+        f"{PREFIX}/quiz/yusuf/attempts",
+        json={"question_ids": ["q1"]},
+        headers=learner(client),
+    )
+    assert response.status_code == 200, (
+        f"Status: {response.status_code}, Body: {response.text}"
+    )
+    return response.json()
 
 def test_options_never_reveal_the_answer(client, yusuf):
     _unlock(client)
@@ -45,7 +53,7 @@ def test_wrong_answer_returns_edge_explanation_and_followup(client, yusuf):
 
     assert body["is_correct"] is False
     assert body["correct_option_id"] == "o1"
-    assert body["kg_edge"] == "Yusuf (AS) ⟶ (son of) ⟶ Yaqub (AS)"
+    assert body["kg_edge"] == "Yusuf (AS) → (son of) → Yaqub (AS)"
     assert body["explanation"]["en"].startswith("Yusuf is the son")
     assert body["follow_up"]["id"] == "q1f"
     assert body["score"] == 0
@@ -72,14 +80,23 @@ def test_answering_twice_does_not_double_score(client, yusuf):
     _unlock(client)
     attempt = _start(client)
 
-    for _ in range(2):
-        body = client.post(
-            f"{PREFIX}/attempts/{attempt['id']}/answers",
-            json={"question_id": "q1", "option_id": "o1"},
-            headers=learner(client),
-        ).json()
+    first = client.post(
+        f"{PREFIX}/attempts/{attempt['id']}/answers",
+        json={"question_id": "q1", "option_id": "o1"},
+        headers=learner(client),
+    )
 
-    assert body["score"] == 1
+    assert first.status_code == 200
+    assert first.json()["score"] == 1
+
+    second = client.post(
+        f"{PREFIX}/attempts/{attempt['id']}/answers",
+        json={"question_id": "q1", "option_id": "o1"},
+        headers=learner(client),
+    )
+
+    assert second.status_code == 409
+    assert second.json()["detail"] == "Attempt already finished"
 
 def test_option_from_another_question_is_rejected(client, yusuf):
     _unlock(client)

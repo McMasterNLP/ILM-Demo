@@ -28,7 +28,11 @@ def test_quiz_opens_once_the_story_is_finished(client, yusuf):
     assert len(response.json()["questions"]) == 1
 
 def test_attempt_cannot_be_started_while_locked(client, yusuf):
-    response = client.post(f"{PREFIX}/quiz/yusuf/attempts", headers=learner(client))
+    response = client.post(
+        f"{PREFIX}/quiz/yusuf/attempts",
+        json={"question_ids": ["q1"]},
+        headers=learner(client),
+    )
     assert response.status_code == 403
 
 def test_unlock_after_blocks_until_enough_stories_are_done(client, yusuf, session):

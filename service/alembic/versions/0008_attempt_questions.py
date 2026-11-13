@@ -15,51 +15,47 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.create_table(
-        "attempt_questions",
-        sa.Column(
-            "attempt_id",
-            sa.String(length=32),
-            nullable=False,
-        ),
-        sa.Column(
-            "question_id",
-            sa.String(length=32),
-            nullable=False,
-        ),
-        sa.Column(
-            "position",
-            sa.Integer(),
-            nullable=False,
-        ),
-        sa.ForeignKeyConstraint(
-            ["attempt_id"],
-            ["quiz_attempts.id"],
-            ondelete="CASCADE",
-        ),
-        sa.ForeignKeyConstraint(
-            ["question_id"],
-            ["questions.id"],
-            ondelete="CASCADE",
-        ),
-        sa.PrimaryKeyConstraint(
-            "attempt_id",
-            "question_id",
-        ),
-        sa.UniqueConstraint(
-            "attempt_id",
-            "position",
-            name="uq_attempt_question_position",
-        ),
-    )
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
 
-    op.create_index(
-        "ix_attempt_questions_attempt_position",
-        "attempt_questions",
-        ["attempt_id", "position"],
-        unique=False,
-    )
+    if "attempt_questions" not in inspector.get_table_names():
+        op.create_table(
+            "attempt_questions",
+            sa.Column("attempt_id", sa.String(length=32), nullable=False),
+            sa.Column("question_id", sa.String(length=32), nullable=False),
+            sa.Column("position", sa.Integer(), nullable=False),
+            sa.ForeignKeyConstraint(
+                ["attempt_id"],
+                ["quiz_attempts.id"],
+                ondelete="CASCADE",
+            ),
+            sa.ForeignKeyConstraint(
+                ["question_id"],
+                ["questions.id"],
+                ondelete="CASCADE",
+            ),
+            sa.PrimaryKeyConstraint("attempt_id", "question_id"),
+            sa.UniqueConstraint(
+                "attempt_id",
+                "position",
+                name="uq_attempt_question_position",
+            ),
+        )
 
+    inspector = sa.inspect(bind)
+    indexes = {
+        index["name"]
+        for index in inspector.get_indexes("attempt_questions")
+        if index.get("name")
+    }
+
+    if "ix_attempt_questions_attempt_position" not in indexes:
+        op.create_index(
+            "ix_attempt_questions_attempt_position",
+            "attempt_questions",
+            ["attempt_id", "position"],
+            unique=False,
+        )
 
 def downgrade() -> None:
     op.drop_index(

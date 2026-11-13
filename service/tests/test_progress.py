@@ -27,7 +27,11 @@ def test_paragraph_index_is_clamped(client, yusuf):
 
 def test_restart_clears_reading_but_keeps_the_quiz_score(client, yusuf):
     _put(client, 2)
-    attempt = client.post(f"{PREFIX}/quiz/yusuf/attempts", headers=learner(client)).json()
+    attempt = client.post(
+        f"{PREFIX}/quiz/yusuf/attempts",
+        json={"question_ids": ["q1"]},
+        headers=learner(client),
+    ).json()
     client.post(
         f"{PREFIX}/attempts/{attempt['id']}/answers",
         json={"question_id": "q1", "option_id": "o1"},
@@ -43,7 +47,11 @@ def test_restart_clears_reading_but_keeps_the_quiz_score(client, yusuf):
 
 def test_summary_counts_reading_and_answers(client, yusuf):
     _put(client, 2)
-    attempt = client.post(f"{PREFIX}/quiz/yusuf/attempts", headers=learner(client)).json()
+    attempt = client.post(
+        f"{PREFIX}/quiz/yusuf/attempts",
+        json={"question_ids": ["q1"]},
+        headers=learner(client),
+    ).json()
     client.post(
         f"{PREFIX}/attempts/{attempt['id']}/answers",
         json={"question_id": "q1", "option_id": "o1"},
