@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-canvas text-ink;
+  }
+
+  [dir="rtl"] body {
+    @apply font-arabic;
+  }
+}
+
+@layer components {
+
+  .eyebrow {
+    @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-brand;
+  }
+
+  .eyebrow-muted {
+    @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-muted;
+  }
+
+  .card {
+    @apply rounded-xl border border-hair bg-white shadow-card;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-brand
+           px-4 py-2.5 text-sm font-medium text-brand transition-colors
+           hover:bg-brand-tint focus-visible:outline focus-visible:outline-2
+           focus-visible:outline-offset-2 focus-visible:outline-brand
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-quiet {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-hair
+           bg-white px-4 py-2.5 text-sm font-medium text-ink-soft transition-colors
+           hover:bg-canvas focus-visible:outline focus-visible:outline-2
+           focus-visible:outline-offset-2 focus-visible:outline-brand;
+  }
+
+  .btn-locked {
+    @apply inline-flex w-full items-center justify-center rounded-lg border border-hair
+           bg-canvas px-4 py-2.5 text-sm font-medium text-ink-muted;
+  }
+}

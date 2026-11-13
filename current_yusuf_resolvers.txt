@@ -1,0 +1,797 @@
+===== FAMILY RESOLVER =====
+import re
+from dataclasses import asdict, dataclass
+from typing import Iterable
+
+from app.ml.re_positive_candidates import PositiveRelationPrediction
+
+
+@dataclass(frozen=True)
+class ResolvedFamilyRelation:
+    sentence: str
+
+    subject_key: str
+    subject_text: str
+    subject_type: str
+
+    predicate: str
+
+    object_key: str
+    object_text: str
+    object_type: str
+
+    source_relation: str
+    existence_probability: float
+    relation_confidence: float
+
+    resolution_rule: str
+
+
+@dataclass(frozen=True)
+class _SemanticMatch:
+    subject_key: str
+    subject_text: str
+    subject_type: str
+
+    predicate: str
+
+    object_key: str
+    object_text: str
+    object_type: str
+
+    rule: str
+
+
+class FamilyRelationResolver:
+    """
+    Resolve directional family semantics after the source RE system.
+
+    Important:
+    - Does NOT change the trained RE prediction.
+    - Uses the original sentence plus linked-entity offsets.
+    - Only applies to verified Arabic family constructions.
+    - Unknown constructions are not guessed.
+    """
+
+    FAMILY_RELATIONS = {
+        "Family.has_parent",
+        "Family.has_sibling",
+        "Family.has_spouse",
+        "Family.has_relative",
+    }
+
+    # child ... parent
+    CHILD_TO_PARENT = re.compile(
+        r"^\s*(?:هو\s+|هي\s+)?"
+        r"(?:ابن|إبن|بن|ابنة|إبنة|بنت)\s*$"
+    )
+
+    # father ... child
+    FATHER_TO_CHILD = re.compile(
+        r"^\s*(?:هو\s+|هي\s+)?"
+        r"(?:أب|اب|أبو|ابو|أبا|ابا|والد)\s*$"
+    )
+
+    # symmetric sibling relation
+    SIBLING = re.compile(
+        r"^\s*(?:هو\s+|هي\s+)?"
+        r"(?:أخ|اخ|أخا|اخا|أخو|اخو|أخت|اخت|شقيق|شقيقة)\s*$"
+    )
+
+    @staticmethod
+    def _resolve_named_parent_pattern(
+        prediction: PositiveRelationPrediction,
+    ) -> _SemanticMatch | None:
+        """
+        Resolve Family.has_parent when the Arabic paragraph explicitly
+        names a parent using a possessive father construction.
+
+        This helper cannot create a relation by itself. It is only used
+        after Stage B has already predicted Family.has_parent.
+        """
+
+        subject = (
+            prediction.subject_key,
+            prediction.subject_text,
+            prediction.subject_type,
+        )
+        object_ = (
+            prediction.object_key,
+            prediction.object_text,
+            prediction.object_type,
+        )
+
+        parent_marker = (
+            r"(?:\u0645\u0646\s+)?"
+            r"(?:"
+            r"\u0623\u0628\u064a\u0647|"
+            r"\u0623\u0628\u064a\u0647\u0627|"
+            r"\u0623\u0628\u0627\u0647|"
+            r"\u0623\u0628\u0627\u0647\u0627|"
+            r"\u0648\u0627\u0644\u062f\u0647|"
+            r"\u0648\u0627\u0644\u062f\u0647\u0627"
+            r")"
+            r"\s+"
+        )
+
+        for child, parent in (
+            (subject, object_),
+            (object_, subject),
+        ):
+            child_key, child_text, child_type = child
+            parent_key, parent_text, parent_type = parent
+
+            pattern = (
+                re.escape(child_text)
+                + r"[^.!?\u061f\n]{0,120}?"
+                + parent_marker
+                + re.escape(parent_text)
+            )
+
+            if re.search(pattern, prediction.sentence):
+                return _SemanticMatch(
+                    subject_key=child_key,
+                    subject_text=child_text,
+                    subject_type=child_type,
+                    predicate="child_of",
+                    object_key=parent_key,
+                    object_text=parent_text,
+                    object_type=parent_type,
+                    rule="named_parent_marker:possessive_father",
+                )
+
+        return None
+
+    @staticmethod
+    def _between(
+        sentence: str,
+        left_end: int,
+        right_start: int,
+    ) -> str:
+        return sentence[left_end:right_start].strip()
+
+    @staticmethod
+    def _entity_tuple(
+        prediction: PositiveRelationPrediction,
+        which: str,
+    ) -> tuple[str, str, str, int, int]:
+        if which == "subject":
+            return (
+                prediction.subject_key,
+                prediction.subject_text,
+                prediction.subject_type,
+                prediction.subject_char_start,
+                prediction.subject_char_end,
+            )
+
+        if which == "object":
+            return (
+                prediction.object_key,
+                prediction.object_text,
+                prediction.object_type,
+                prediction.object_char_start,
+                prediction.object_char_end,
+            )
+
+        raise ValueError(which)
+
+    def _ordered_mentions(
+        self,
+        prediction: PositiveRelationPrediction,
+    ):
+        subject = self._entity_tuple(prediction, "subject")
+        object_ = self._entity_tuple(prediction, "object")
+
+        if subject[3] <= object_[3]:
+            return subject, object_
+
+        return object_, subject
+
+    def _resolve_semantics(
+        self,
+        prediction: PositiveRelationPrediction,
+    ) -> _SemanticMatch | None:
+
+        if prediction.relation_label not in self.FAMILY_RELATIONS:
+            return None
+
+        if prediction.relation_label == "Family.has_parent":
+            named_parent = self._resolve_named_parent_pattern(prediction)
+            if named_parent is not None:
+                return named_parent
+
+        left, right = self._ordered_mentions(prediction)
+
+        (
+            left_key,
+            left_text,
+            left_type,
+            _left_start,
+            left_end,
+        ) = left
+
+        (
+            right_key,
+            right_text,
+            right_type,
+            right_start,
+            _right_end,
+        ) = right
+
+        between = self._between(
+            prediction.sentence,
+            left_end,
+            right_start,
+        )
+
+        #
+        # X ابن Y
+        # X = child, Y = parent
+        #
+        if self.CHILD_TO_PARENT.fullmatch(between):
+            return _SemanticMatch(
+                subject_key=left_key,
+                subject_text=left_text,
+                subject_type=left_type,
+                predicate="child_of",
+                object_key=right_key,
+                object_text=right_text,
+                object_type=right_type,
+                rule=f"child_marker:{between}",
+            )
+
+        #
+        # X أبا Y / X أبو Y / X أب Y
+        # X = father, Y = child
+        #
+        if self.FATHER_TO_CHILD.fullmatch(between):
+            return _SemanticMatch(
+                subject_key=left_key,
+                subject_text=left_text,
+                subject_type=left_type,
+                predicate="father_of",
+                object_key=right_key,
+                object_text=right_text,
+                object_type=right_type,
+                rule=f"father_marker:{between}",
+            )
+
+        #
+        # X أخا Y / X أخ Y / X أخت Y
+        # symmetric relation
+        #
+        if self.SIBLING.fullmatch(between):
+            return _SemanticMatch(
+                subject_key=left_key,
+                subject_text=left_text,
+                subject_type=left_type,
+                predicate="sibling_of",
+                object_key=right_key,
+                object_text=right_text,
+                object_type=right_type,
+                rule=f"sibling_marker:{between}",
+            )
+
+        return None
+
+    def resolve_one(
+        self,
+        prediction: PositiveRelationPrediction,
+    ) -> ResolvedFamilyRelation | None:
+
+        semantic = self._resolve_semantics(prediction)
+
+        if semantic is None:
+            return None
+
+        return ResolvedFamilyRelation(
+            sentence=prediction.sentence,
+
+            subject_key=semantic.subject_key,
+            subject_text=semantic.subject_text,
+            subject_type=semantic.subject_type,
+
+            predicate=semantic.predicate,
+
+            object_key=semantic.object_key,
+            object_text=semantic.object_text,
+            object_type=semantic.object_type,
+
+            source_relation=prediction.relation_label,
+            existence_probability=prediction.existence_probability,
+            relation_confidence=prediction.relation_confidence,
+
+            resolution_rule=semantic.rule,
+        )
+
+    def resolve(
+        self,
+        predictions: Iterable[PositiveRelationPrediction],
+    ) -> list[ResolvedFamilyRelation]:
+        """
+        Resolve predictions and collapse duplicate semantic edges.
+
+        For Family.has_parent, preserve provenance from the source-RE
+        direction that agrees with the source ontology:
+
+            Family.has_parent = child -> parent
+
+        For symmetric family relations, retain the strongest prediction.
+        """
+        best = {}
+
+        for prediction in predictions:
+            resolved = self.resolve_one(prediction)
+
+            if resolved is None:
+                continue
+
+            key = (
+                resolved.subject_key,
+                resolved.predicate,
+                resolved.object_key,
+            )
+
+            #
+            # Directional provenance for Family.has_parent.
+            #
+            if (
+                prediction.relation_label == "Family.has_parent"
+                and resolved.predicate == "child_of"
+            ):
+                #
+                # Educational child_of has the same direction as the
+                # WOJOOD source relation:
+                #
+                # child -> parent
+                #
+                direction_rank = int(
+                    prediction.subject_key
+                    == resolved.subject_key
+                    and prediction.object_key
+                    == resolved.object_key
+                )
+
+            elif (
+                prediction.relation_label == "Family.has_parent"
+                and resolved.predicate == "father_of"
+            ):
+                #
+                # Educational father_of reverses the WOJOOD direction.
+                #
+                # WOJOOD:
+                #     child -> parent
+                #
+                # Educational:
+                #     parent -> child
+                #
+                direction_rank = int(
+                    prediction.subject_key
+                    == resolved.object_key
+                    and prediction.object_key
+                    == resolved.subject_key
+                )
+
+            else:
+                #
+                # sibling_of / spouse-style relations are symmetric for
+                # this resolver, so confidence can decide between the
+                # duplicate directed source predictions.
+                #
+                direction_rank = 1
+
+            candidate_rank = (
+                direction_rank,
+                resolved.relation_confidence,
+            )
+
+            previous = best.get(key)
+
+            if (
+                previous is None
+                or candidate_rank > previous[0]
+            ):
+                best[key] = (
+                    candidate_rank,
+                    resolved,
+                )
+
+        resolved_relations = [
+            value[1]
+            for value in best.values()
+        ]
+
+        return sorted(
+            resolved_relations,
+            key=lambda item: (
+                item.subject_key,
+                item.predicate,
+                item.object_key,
+            ),
+        )
+
+    def resolve_dicts(
+        self,
+        predictions: Iterable[PositiveRelationPrediction],
+    ) -> list[dict]:
+        return [
+            asdict(item)
+            for item in self.resolve(predictions)
+        ]
+
+
+__all__ = [
+    "ResolvedFamilyRelation",
+    "FamilyRelationResolver",
+]
+
+===== MAJOR EVENT RESOLVER =====
+from __future__ import annotations
+
+import re
+from dataclasses import asdict, dataclass
+from typing import TYPE_CHECKING, Iterable
+
+if TYPE_CHECKING:
+    from app.ml.islamic_entity_linker import LinkedEntityMention
+
+
+@dataclass(frozen=True)
+class ResolvedMajorEventRelation:
+    sentence: str
+
+    subject_key: str
+    subject_text: str
+    subject_type: str
+
+    predicate: str
+
+    object_key: str
+    object_text: str
+    object_type: str
+
+    resolution_rule: str
+    source: str
+
+
+class MajorEventRelationResolver:
+    """
+    Resolve a small controlled set of major narrative events.
+
+    This layer is separate from the trained WOJOOD RE model and only
+    creates an educational relation when an explicit supported Arabic
+    construction and the required linked entities are both present.
+    """
+
+    #
+    # Direct construction where Yusuf is the grammatical object:
+    #
+    #     ... threw him into a/the well
+    #
+    # Deliberately do NOT accept bare "threw" / "they threw", because the
+    # object may be something else (for example, a caravan throwing a rope
+    # into the well).
+    #
+    THROWN_INTO = re.compile(
+        r"(?:"
+        r"\u0623\u0644\u0642\u0648\u0647"
+        r"|\u0641\u0623\u0644\u0642\u0648\u0647"
+        r"|\u064a\u0644\u0642\u0648\u0647"
+        r")"
+        r".{0,80}?"
+        r"\u0641\u064a\s*"
+        r"(?:\u0627\u0644)?\u0628\u0626\u0631",
+        re.DOTALL,
+    )
+
+    #
+    # Anaphoric construction used in the curated Yusuf story:
+    #
+    #     ... a deep well ... they threw him in it
+    #
+    # The linked well must occur before the pronoun-bearing throw verb.
+    #
+    THROWN_INTO_REFERENCED_WELL = re.compile(
+        r"(?:\u0627\u0644)?\u0628\u0626\u0631"
+        r".{0,100}?"
+        r"(?:"
+        r"\u0623\u0644\u0642\u0648\u0647"
+        r"|\u0641\u0623\u0644\u0642\u0648\u0647"
+        r")"
+        r"\s+\u0641\u064a\u0647",
+        re.DOTALL,
+    )
+
+    TAKEN_TO = re.compile(
+        r"(?:"
+        r"\u0623\u062e\u0630\u0648\u0647"
+        r"|\u0623\u062e\u0630\u0648\u0627\s+\u064a\u0648\u0633\u0641"
+        r"|\u062d\u0645\u0644\u0648\u0647"
+        r"|\u0646\u0642\u0644\u0648\u0647"
+        r"|\u0630\u0647\u0628\s+\u0628\u0647"
+        r"|\u062c\u064a\u0621\s+\u0628\u0647"
+        r"|\u0627\u0646\u062a\u0642\u0644\s+\u064a\u0648\u0633\u0641"
+        r")"
+        r".{0,140}?"
+        r"(?:"
+        r"\u0625\u0644\u0649\s+\u0645\u0635\u0631"
+        r"|\u0641\u064a\s+\u0645\u0635\u0631"
+        r"|\u0645\u0635\u0631"
+        r")",
+        re.DOTALL,
+    )
+
+    IMPRISONED_IN = re.compile(
+        r"(?:"
+        r"\u062f\u062e\u0644"
+        r"|\u064a\u062f\u062e\u0644"
+        r"|\u0623\u062f\u062e\u0644"
+        r"|\u0623\u0648\u062f\u0639"
+        r"|\u0633\u062c\u0646"
+        r"|\u0633\u064f\u062c\u0646"
+        r")"
+        r".{0,80}?"
+        r"(?:\u0627\u0644)?\u0633\u062c\u0646",
+        re.DOTALL,
+    )
+
+    APPOINTED_OVER = re.compile(
+        r"(?:"
+        r"\u0627\u0633\u062a\u0639\u0645\u0644\u0647\s+\u0627\u0644\u0645\u0644\u0643"
+        r"|\u0648\u0644\u0627\u0647\s+\u0627\u0644\u0645\u0644\u0643"
+        r"|\u0648\u0644\u0651\u0627\u0647\s+\u0627\u0644\u0645\u0644\u0643"
+        r"|\u064a\u0634\u0631\u0641"
+        r"|\u064a\u062f\u064a\u0631"
+        r")"
+        r".{0,160}?"
+        r"(?:"
+        r"\u0627\u0642\u062a\u0635\u0627\u062f\s+\u0645\u0635\u0631"
+        r"|\u0645\u0648\u0627\u0631\u062f\s+(?:\u0627\u0644\u062f\u0648\u0644\u0629|\u0645\u0635\u0631)"
+        r"|\u0634\u0624\u0648\u0646\s+\u0645\u0635\u0631"
+        r"|\u0645\u0635\u0631"
+        r")",
+        re.DOTALL,
+    )
+
+    REUNITED_WITH = re.compile(
+        r"(?:"
+        r"\u0627\u062c\u062a\u0645\u0639"
+        r"|\u0627\u0644\u062a\u0642\u0649"
+        r"|\u064a\u0644\u062a\u0626\u0645\s+\u0634\u0645\u0644"
+        r"|\u0648\u0635\u0644\s+\u064a\u0639\u0642\u0648\u0628"
+        r"|\u064a\u0635\u0644\s+\u064a\u0639\u0642\u0648\u0628"
+        r")",
+        re.DOTALL,
+    )
+
+    @staticmethod
+    def _unique_mentions(
+        mentions: Iterable["LinkedEntityMention"],
+    ) -> list["LinkedEntityMention"]:
+        unique = {}
+
+        for mention in mentions:
+            key = (
+                mention.canonical_key,
+                mention.char_start,
+                mention.char_end,
+            )
+            unique[key] = mention
+
+        return sorted(
+            unique.values(),
+            key=lambda item: (
+                item.char_start,
+                item.char_end,
+                item.canonical_key,
+            ),
+        )
+
+    @staticmethod
+    def _find_by_key(
+        mentions: Iterable["LinkedEntityMention"],
+        key: str,
+    ) -> list["LinkedEntityMention"]:
+        return [
+            mention
+            for mention in mentions
+            if mention.canonical_key == key
+        ]
+
+    @staticmethod
+    def _make(
+        *,
+        sentence: str,
+        subject: "LinkedEntityMention",
+        predicate: str,
+        object_: "LinkedEntityMention",
+        rule: str,
+    ) -> ResolvedMajorEventRelation:
+        return ResolvedMajorEventRelation(
+            sentence=sentence,
+            subject_key=subject.canonical_key,
+            subject_text=subject.text,
+            subject_type=subject.app_type,
+            predicate=predicate,
+            object_key=object_.canonical_key,
+            object_text=object_.text,
+            object_type=object_.app_type,
+            resolution_rule=rule,
+            source="educational_major_event_pattern",
+        )
+
+    def resolve(
+        self,
+        *,
+        sentence: str,
+        mentions: Iterable["LinkedEntityMention"],
+        story_key: str | None = None,
+    ) -> list[ResolvedMajorEventRelation]:
+
+        mentions = self._unique_mentions(mentions)
+        results = {}
+
+        yusuf = self._find_by_key(mentions, "yusuf")
+
+        targets = {
+            "well": self._find_by_key(mentions, "well"),
+            "egypt": self._find_by_key(mentions, "egypt"),
+            "prison": self._find_by_key(mentions, "prison"),
+            "yaqub": self._find_by_key(mentions, "yaqub"),
+        }
+
+        #
+        # Yusuf-story contextual recovery.
+        #
+        # Some curated paragraphs refer to Yusuf only by an attached
+        # pronoun, for example:
+        #
+        #     ?????? ?? ???
+        #
+        # In that case there is no explicit Yusuf span for the linker to
+        # return. We do not perform general coreference here. We only allow
+        # the canonical Yusuf story subject when the explicit throw-into-well
+        # construction is present and the well itself was linked.
+        #
+        if (
+            not yusuf
+            and story_key == "yusuf"
+            and targets["well"]
+            and (
+                self.THROWN_INTO.search(sentence) is not None
+                or self.THROWN_INTO_REFERENCED_WELL.search(sentence) is not None
+            )
+        ):
+            well = targets["well"][0]
+
+            relation = ResolvedMajorEventRelation(
+                sentence=sentence,
+                subject_key="yusuf",
+                subject_text="\u064a\u0648\u0633\u0641",
+                subject_type="person",
+                predicate="thrown_into",
+                object_key=well.canonical_key,
+                object_text=well.text,
+                object_type=well.app_type,
+                resolution_rule="yusuf_story_implicit_throw_subject",
+                source="educational_major_event_pattern",
+            )
+
+            results[
+                (
+                    relation.subject_key,
+                    relation.predicate,
+                    relation.object_key,
+                )
+            ] = relation
+
+        #
+        # All other major-event rules still require an explicit linked
+        # Yusuf mention.
+        #
+        if not yusuf:
+            return sorted(
+                results.values(),
+                key=lambda item: (
+                    item.subject_key,
+                    item.predicate,
+                    item.object_key,
+                ),
+            )
+
+        subject = yusuf[0]
+
+        checks = [
+            (
+                "thrown_into",
+                "well",
+                self.THROWN_INTO,
+                "explicit_throw_into_well",
+            ),
+            (
+                "taken_to",
+                "egypt",
+                self.TAKEN_TO,
+                "explicit_transport_to_egypt",
+            ),
+            (
+                "imprisoned_in",
+                "prison",
+                self.IMPRISONED_IN,
+                "explicit_yusuf_prison_event",
+            ),
+            (
+                "appointed_over",
+                "egypt",
+                self.APPOINTED_OVER,
+                "explicit_administrative_role_in_egypt",
+            ),
+            (
+                "reunited_with",
+                "yaqub",
+                self.REUNITED_WITH,
+                "explicit_yusuf_yaqub_reunion",
+            ),
+        ]
+
+        for predicate, target_key, pattern, rule in checks:
+            target_mentions = targets[target_key]
+
+            if not target_mentions:
+                continue
+
+            if predicate == "thrown_into":
+                matched = (
+                    self.THROWN_INTO.search(sentence) is not None
+                    or self.THROWN_INTO_REFERENCED_WELL.search(sentence) is not None
+                )
+            else:
+                matched = pattern.search(sentence) is not None
+
+            if not matched:
+                continue
+
+            relation = self._make(
+                sentence=sentence,
+                subject=subject,
+                predicate=predicate,
+                object_=target_mentions[0],
+                rule=rule,
+            )
+
+            results[
+                (
+                    relation.subject_key,
+                    relation.predicate,
+                    relation.object_key,
+                )
+            ] = relation
+
+        return sorted(
+            results.values(),
+            key=lambda item: (
+                item.subject_key,
+                item.predicate,
+                item.object_key,
+            ),
+        )
+
+    def resolve_dicts(
+        self,
+        *,
+        sentence: str,
+        mentions: Iterable["LinkedEntityMention"],
+    ) -> list[dict]:
+        return [
+            asdict(item)
+            for item in self.resolve(
+                sentence=sentence,
+                mentions=mentions,
+            )
+        ]
+
+
+__all__ = [
+    "ResolvedMajorEventRelation",
+    "MajorEventRelationResolver",
+]

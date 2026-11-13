@@ -1,0 +1,55 @@
+hard_pool_rank	prophet	surah	ayah	subject	object	subject_canonical	object_canonical	subject_type	object_type	existence_probability	current_prediction	marker_status	sentence
+1	musa	7	122	موسى	هارون	musa	harun	person	person	0.9936759114265442	relation	marked	رب موسى وهارون
+2	musa	26	48	موسى	هارون	musa	harun	person	person	0.9936759114265442	relation	marked	رب موسى وهارون
+3	ibrahim	19	49	إسحاق	يعقوب	ishaq	yaqub	person	person	0.9910057425498963	relation	marked	فلما اعتزلهم وما يعبدون من دون الله وهبنا له إسحاق ويعقوب ۖ وكلا جعلنا نبيا
+4	musa	10	75	موسى	هارون	musa	harun	person	person	0.9885492444038391	relation	marked	ثم بعثنا من بعدهم موسى وهارون إلى فرعون وملئه بآياتنا فاستكبروا وكانوا قوما مجرمين
+5	musa	7	122	هارون	موسى	harun	musa	person	person	0.9878976583480835	relation	marked	رب موسى وهارون
+6	musa	26	48	هارون	موسى	harun	musa	person	person	0.9878976583480835	relation	marked	رب موسى وهارون
+7	ibrahim	19	49	يعقوب	إسحاق	yaqub	ishaq	person	person	0.9872564911842346	relation	marked	فلما اعتزلهم وما يعبدون من دون الله وهبنا له إسحاق ويعقوب ۖ وكلا جعلنا نبيا
+8	musa	10	75	هارون	موسى	harun	musa	person	person	0.9828913807868958	relation	marked	ثم بعثنا من بعدهم موسى وهارون إلى فرعون وملئه بآياتنا فاستكبروا وكانوا قوما مجرمين
+9	musa	7	104	موسى	فرعون	musa	pharaoh	person	person	0.9598809123039246	relation	marked	وقال موسى يا فرعون إني رسول من رب العالمين
+10	musa	7	104	فرعون	موسى	pharaoh	musa	person	person	0.8994696378707886	relation	marked	وقال موسى يا فرعون إني رسول من رب العالمين
+11	musa	7	103	فرعون	موسى	pharaoh	musa	person	person	0.5947047799825669	relation	marked	ثم بعثنا من بعدهم موسى بآياتنا إلى فرعون وملئه فظلموا بها ۖ فانظر كيف كان عاقبة المفسدين
+12	musa	10	88	فرعون	موسى	pharaoh	musa	person	person	0.46069851964712144	no_relation	marked	وقال موسى ربنا إنك آتيت فرعون وملأه زينة وأموالا في الحياة الدنيا ربنا ليضلوا عن سبيلك ۖ ربنا اطمس على أموالهم واشدد على قلوبهم فلا يؤمنوا حتى يروا العذاب الأليم
+13	musa	10	83	فرعون	موسى	pharaoh	musa	person	person	0.44468157142400744	no_relation	marked	فما آمن لموسى إلا ذرية من قومه على خوف من فرعون وملئهم أن يفتنهم ۚ وإن فرعون لعال في الأرض وإنه لمن المسرفين
+14	musa	7	127	فرعون	موسى	pharaoh	musa	person	person	0.43850011825561525	no_relation	marked	وقال الملأ من قوم فرعون أتذر موسى وقومه ليفسدوا في الأرض ويذرك وآلهتك ۚ قال سنقتل أبناءهم ونستحيي نساءهم وإنا فوقهم قاهرون
+15	musa	10	75	فرعون	هارون	pharaoh	harun	person	person	0.4158633530139923	no_relation	marked	ثم بعثنا من بعدهم موسى وهارون إلى فرعون وملئه بآياتنا فاستكبروا وكانوا قوما مجرمين
+16	ibrahim	26	70	أبيه	قومه	azar	ibrahim_people	person	group	0.40954583287239077	no_relation	marked	إذ قال لأبيه وقومه ما تعبدون
+17	musa	7	113	السحرة	فرعون	magicians	pharaoh	group	person	0.35535851716995237	no_relation	marked	وجاء السحرة فرعون قالوا إن لنا لأجرا إن كنا نحن الغالبين
+18	nuh	7	60	الملأ	قومه	nuh_elite	nuh_people	group	group	0.2967691242694855	no_relation	marked	قال الملأ من قومه إنا لنراك في ضلال مبين
+19	musa	10	75	فرعون	موسى	pharaoh	musa	person	person	0.2606939300894737	no_relation	marked	ثم بعثنا من بعدهم موسى وهارون إلى فرعون وملئه بآياتنا فاستكبروا وكانوا قوما مجرمين
+20	musa	10	88	موسى	فرعون	musa	pharaoh	person	person	0.2564809650182724	no_relation	marked	وقال موسى ربنا إنك آتيت فرعون وملأه زينة وأموالا في الحياة الدنيا ربنا ليضلوا عن سبيلك ۖ ربنا اطمس على أموالهم واشدد على قلوبهم فلا يؤمنوا حتى يروا العذاب الأليم
+21	musa	7	113	فرعون	السحرة	pharaoh	magicians	person	group	0.2505425289273262	no_relation	marked	وجاء السحرة فرعون قالوا إن لنا لأجرا إن كنا نحن الغالبين
+22	musa	10	80	السحرة	موسى	magicians	musa	group	person	0.23654846847057343	no_relation	marked	فلما جاء السحرة قال لهم موسى ألقوا ما أنتم ملقون
+23	ibrahim	26	70	قومه	أبيه	ibrahim_people	azar	group	person	0.19763379991054536	no_relation	marked	إذ قال لأبيه وقومه ما تعبدون
+24	musa	7	127	موسى	فرعون	musa	pharaoh	person	person	0.1814582198858261	no_relation	marked	وقال الملأ من قوم فرعون أتذر موسى وقومه ليفسدوا في الأرض ويذرك وآلهتك ۚ قال سنقتل أبناءهم ونستحيي نساءهم وإنا فوقهم قاهرون
+25	musa	10	87	موسى	مصر	musa	egypt	person	place	0.15020176023244858	no_relation	marked	وأوحينا إلى موسى وأخيه أن تبوآ لقومكما بمصر بيوتا واجعلوا بيوتكم قبلة وأقيموا الصلاة ۗ وبشر المؤمنين
+26	musa	7	109	الملأ	فرعون	pharaoh_elite	pharaoh	group	person	0.13304668217897414	no_relation	marked	قال الملأ من قوم فرعون إن هذا لساحر عليم
+27	nuh	7	60	قومه	الملأ	nuh_people	nuh_elite	group	group	0.13106665164232253	no_relation	marked	قال الملأ من قومه إنا لنراك في ضلال مبين
+28	musa	10	80	موسى	السحرة	musa	magicians	person	group	0.11555086225271224	no_relation	marked	فلما جاء السحرة قال لهم موسى ألقوا ما أنتم ملقون
+29	musa	7	134	بني إسرائيل	موسى	children_of_israel	musa	group	person	0.11330259591341019	no_relation	marked	ولما وقع عليهم الرجز قالوا يا موسى ادع لنا ربك بما عهد عندك ۖ لئن كشفت عنا الرجز لنؤمنن لك ولنرسلن معك بني إسرائيل
+30	musa	7	134	موسى	بني إسرائيل	musa	children_of_israel	person	group	0.10774550810456276	no_relation	marked	ولما وقع عليهم الرجز قالوا يا موسى ادع لنا ربك بما عهد عندك ۖ لئن كشفت عنا الرجز لنؤمنن لك ولنرسلن معك بني إسرائيل
+31	musa	7	103	موسى	فرعون	musa	pharaoh	person	person	0.09070164933800698	no_relation	marked	ثم بعثنا من بعدهم موسى بآياتنا إلى فرعون وملئه فظلموا بها ۖ فانظر كيف كان عاقبة المفسدين
+32	nuh	23	24	الملأ	قومه	nuh_elite	nuh_people	group	group	0.07960266135632992	no_relation	marked	فقال الملأ الذين كفروا من قومه ما هذا إلا بشر مثلكم يريد أن يتفضل عليكم ولو شاء الله لأنزل ملائكة ما سمعنا بهذا في آبائنا الأولين
+33	musa	7	109	فرعون	الملأ	pharaoh	pharaoh_elite	person	group	0.07760863974690438	no_relation	marked	قال الملأ من قوم فرعون إن هذا لساحر عليم
+34	nuh	23	23	نوحا	قومه	nuh	nuh_people	person	group	0.07457999251782894	no_relation	marked	ولقد أرسلنا نوحا إلى قومه فقال يا قوم اعبدوا الله ما لكم من إله غيره ۖ أفلا تتقون
+35	nuh	23	24	قومه	الملأ	nuh_people	nuh_elite	group	group	0.07310660704970359	no_relation	marked	فقال الملأ الذين كفروا من قومه ما هذا إلا بشر مثلكم يريد أن يتفضل عليكم ولو شاء الله لأنزل ملائكة ما سمعنا بهذا في آبائنا الأولين
+36	musa	7	127	الملأ	فرعون	pharaoh_elite	pharaoh	group	person	0.06947879940271377	no_relation	marked	وقال الملأ من قوم فرعون أتذر موسى وقومه ليفسدوا في الأرض ويذرك وآلهتك ۚ قال سنقتل أبناءهم ونستحيي نساءهم وإنا فوقهم قاهرون
+37	musa	10	75	هارون	فرعون	harun	pharaoh	person	person	0.06802910082042217	no_relation	marked	ثم بعثنا من بعدهم موسى وهارون إلى فرعون وملئه بآياتنا فاستكبروا وكانوا قوما مجرمين
+38	nuh	7	59	نوحا	قومه	nuh	nuh_people	person	group	0.06377863250672818	no_relation	marked	لقد أرسلنا نوحا إلى قومه فقال يا قوم اعبدوا الله ما لكم من إله غيره إني أخاف عليكم عذاب يوم عظيم
+39	musa	26	41	السحرة	فرعون	magicians	pharaoh	group	person	0.05804589297622442	no_relation	marked	فلما جاء السحرة قالوا لفرعون أئن لنا لأجرا إن كنا نحن الغالبين
+40	musa	7	127	فرعون	الملأ	pharaoh	pharaoh_elite	person	group	0.05376624763011932	no_relation	marked	وقال الملأ من قوم فرعون أتذر موسى وقومه ليفسدوا في الأرض ويذرك وآلهتك ۚ قال سنقتل أبناءهم ونستحيي نساءهم وإنا فوقهم قاهرون
+41	musa	7	127	موسى	الملأ	musa	pharaoh_elite	person	group	0.03945394083857536	no_relation	marked	وقال الملأ من قوم فرعون أتذر موسى وقومه ليفسدوا في الأرض ويذرك وآلهتك ۚ قال سنقتل أبناءهم ونستحيي نساءهم وإنا فوقهم قاهرون
+42	musa	26	41	فرعون	السحرة	pharaoh	magicians	person	group	0.03685559332370758	no_relation	marked	فلما جاء السحرة قالوا لفرعون أئن لنا لأجرا إن كنا نحن الغالبين
+43	musa	10	83	موسى	فرعون	musa	pharaoh	person	person	0.03458634577691555	no_relation	marked	فما آمن لموسى إلا ذرية من قومه على خوف من فرعون وملئهم أن يفتنهم ۚ وإن فرعون لعال في الأرض وإنه لمن المسرفين
+44	musa	7	137	فرعون	بني إسرائيل	pharaoh	children_of_israel	person	group	0.023584294877946377	no_relation	marked	وأورثنا القوم الذين كانوا يستضعفون مشارق الأرض ومغاربها التي باركنا فيها ۖ وتمت كلمت ربك الحسنى على بني إسرائيل بما صبروا ۖ ودمرنا ما كان يصنع فرعون وقومه وما كانوا يعرشون
+45	musa	10	75	موسى	فرعون	musa	pharaoh	person	person	0.02086994140408933	no_relation	marked	ثم بعثنا من بعدهم موسى وهارون إلى فرعون وملئه بآياتنا فاستكبروا وكانوا قوما مجرمين
+46	musa	10	90	بني إسرائيل	فرعون	children_of_israel	pharaoh	group	person	0.01582087129354477	no_relation	marked	وجاوزنا ببني إسرائيل البحر فأتبعهم فرعون وجنوده بغيا وعدوا ۖ حتى إذا أدركه الغرق قال آمنت أنه لا إله إلا الذي آمنت به بنو إسرائيل وأنا من المسلمين
+47	musa	7	137	بني إسرائيل	فرعون	children_of_israel	pharaoh	group	person	0.015020535048097371	no_relation	marked	وأورثنا القوم الذين كانوا يستضعفون مشارق الأرض ومغاربها التي باركنا فيها ۖ وتمت كلمت ربك الحسنى على بني إسرائيل بما صبروا ۖ ودمرنا ما كان يصنع فرعون وقومه وما كانوا يعرشون
+48	nuh	23	23	قومه	نوحا	nuh_people	nuh	group	person	0.013873276300728321	no_relation	marked	ولقد أرسلنا نوحا إلى قومه فقال يا قوم اعبدوا الله ما لكم من إله غيره ۖ أفلا تتقون
+49	musa	7	127	الملأ	موسى	pharaoh_elite	musa	group	person	0.012821721006184816	no_relation	marked	وقال الملأ من قوم فرعون أتذر موسى وقومه ليفسدوا في الأرض ويذرك وآلهتك ۚ قال سنقتل أبناءهم ونستحيي نساءهم وإنا فوقهم قاهرون
+50	musa	10	87	مصر	موسى	egypt	musa	place	person	0.011400714749470353	no_relation	marked	وأوحينا إلى موسى وأخيه أن تبوآ لقومكما بمصر بيوتا واجعلوا بيوتكم قبلة وأقيموا الصلاة ۗ وبشر المؤمنين
+51	nuh	7	59	قومه	نوحا	nuh_people	nuh	group	person	0.011139249615371227	no_relation	marked	لقد أرسلنا نوحا إلى قومه فقال يا قوم اعبدوا الله ما لكم من إله غيره إني أخاف عليكم عذاب يوم عظيم
+52	musa	10	90	بنو إسرائيل	فرعون	children_of_israel	pharaoh	group	person	0.01055517913773656	no_relation	marked	وجاوزنا ببني إسرائيل البحر فأتبعهم فرعون وجنوده بغيا وعدوا ۖ حتى إذا أدركه الغرق قال آمنت أنه لا إله إلا الذي آمنت به بنو إسرائيل وأنا من المسلمين
+53	musa	10	90	فرعون	بني إسرائيل	pharaoh	children_of_israel	person	group	0.008953640051186085	no_relation	marked	وجاوزنا ببني إسرائيل البحر فأتبعهم فرعون وجنوده بغيا وعدوا ۖ حتى إذا أدركه الغرق قال آمنت أنه لا إله إلا الذي آمنت به بنو إسرائيل وأنا من المسلمين
+54	musa	10	90	فرعون	بنو إسرائيل	pharaoh	children_of_israel	person	group	0.008831155579537153	no_relation	marked	وجاوزنا ببني إسرائيل البحر فأتبعهم فرعون وجنوده بغيا وعدوا ۖ حتى إذا أدركه الغرق قال آمنت أنه لا إله إلا الذي آمنت به بنو إسرائيل وأنا من المسلمين

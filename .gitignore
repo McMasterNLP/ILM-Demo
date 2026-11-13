@@ -218,3 +218,23 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Backups
+*.bak
+*.bak_*
+*.bak.*
+*.before_*
+
+# Archives
+*.zip
+
+# Generated files
+*.tsbuildinfo
+__pycache__/
+node_modules/
+.venv/
+venv/

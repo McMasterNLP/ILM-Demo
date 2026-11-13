@@ -1,0 +1,57 @@
+rank	prophet	surah	ayah	subject	subject_canonical	subject_type	object	object_canonical	object_type	existence_probability	current_prediction	marker_status	gold_relation	review_status	sentence
+1	musa	28	7	أم موسى	musa_mother	person	موسى	musa	person	0.991472578048706	relation	overlap_unmarked			وأوحينا إلى أم موسى أن أرضعيه ۖ فإذا خفت عليه فألقيه في اليم ولا تخافي ولا تحزني ۖ إنا رادوه إليك وجاعلوه من المرسلين
+2	musa	28	10	أم موسى	musa_mother	person	موسى	musa	person	0.9909698009490967	relation	overlap_unmarked			وأصبح فؤاد أم موسى فارغا ۖ إن كادت لتبدي به لولا أن ربطنا على قلبها لتكون من المؤمنين
+3	ibrahim	6	74	إبراهيم	ibrahim	person	آزر	azar	person	0.9856770038604736	relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+4	ibrahim	6	74	آزر	azar	person	إبراهيم	ibrahim	person	0.9802354454994202	relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+5	musa	28	10	موسى	musa	person	أم موسى	musa_mother	person	0.9784280061721802	relation	overlap_unmarked			وأصبح فؤاد أم موسى فارغا ۖ إن كادت لتبدي به لولا أن ربطنا على قلبها لتكون من المؤمنين
+6	ibrahim	21	72	إسحاق	ishaq	person	يعقوب	yaqub	person	0.9702934145927429	relation	marked			ووهبنا له إسحاق ويعقوب نافلة ۖ وكلا جعلنا صالحين
+7	musa	20	70	هارون	harun	person	موسى	musa	person	0.9697118163108825	relation	marked			فألقي السحرة سجدا قالوا آمنا برب هارون وموسى
+8	musa	28	7	موسى	musa	person	أم موسى	musa_mother	person	0.9650567531585693	relation	overlap_unmarked			وأوحينا إلى أم موسى أن أرضعيه ۖ فإذا خفت عليه فألقيه في اليم ولا تخافي ولا تحزني ۖ إنا رادوه إليك وجاعلوه من المرسلين
+9	musa	20	70	موسى	musa	person	هارون	harun	person	0.9577412962913513	relation	marked			فألقي السحرة سجدا قالوا آمنا برب هارون وموسى
+10	musa	28	3	موسى	musa	person	فرعون	pharaoh	person	0.9552964448928833	relation	marked			نتلو عليك من نبإ موسى وفرعون بالحق لقوم يؤمنون
+11	ibrahim	21	72	يعقوب	yaqub	person	إسحاق	ishaq	person	0.9379078984260559	relation	marked			ووهبنا له إسحاق ويعقوب نافلة ۖ وكلا جعلنا صالحين
+12	nuh	11	42	ابنه	nuh_son	person	نوح	nuh	person	0.9124750614166259	relation	marked			وهي تجري بهم في موج كالجبال ونادى نوح ابنه وكان في معزل يا بني اركب معنا ولا تكن مع الكافرين
+13	salih	7	73	ثمود	thamud	group	صالحا	salih	person	0.9023942708969116	relation	marked			وإلى ثمود أخاهم صالحا ۗ قال يا قوم اعبدوا الله ما لكم من إله غيره ۖ قد جاءتكم بينة من ربكم ۖ هذه ناقة الله لكم آية ۖ فذروها تأكل في أرض الله ۖ ولا تمسوها بسوء فيأخذكم عذاب أليم
+14	salih	11	61	ثمود	thamud	group	صالحا	salih	person	0.8939766049385071	relation	marked			وإلى ثمود أخاهم صالحا ۚ قال يا قوم اعبدوا الله ما لكم من إله غيره ۖ هو أنشأكم من الأرض واستعمركم فيها فاستغفروه ثم توبوا إليه ۚ إن ربي قريب مجيب
+15	musa	28	3	فرعون	pharaoh	person	موسى	musa	person	0.8533426403999329	relation	marked			نتلو عليك من نبإ موسى وفرعون بالحق لقوم يؤمنون
+16	nuh	11	42	نوح	nuh	person	ابنه	nuh_son	person	0.8210828423500061	relation	marked			وهي تجري بهم في موج كالجبال ونادى نوح ابنه وكان في معزل يا بني اركب معنا ولا تكن مع الكافرين
+17	musa	28	8	آل فرعون	pharaoh_people	group	فرعون	pharaoh	person	0.785603404045105	relation	overlap_unmarked			فالتقطه آل فرعون ليكون لهم عدوا وحزنا ۗ إن فرعون وهامان وجنودهما كانوا خاطئين
+18	salih	11	61	صالحا	salih	person	ثمود	thamud	group	0.6962399065494538	relation	marked			وإلى ثمود أخاهم صالحا ۚ قال يا قوم اعبدوا الله ما لكم من إله غيره ۖ هو أنشأكم من الأرض واستعمركم فيها فاستغفروه ثم توبوا إليه ۚ إن ربي قريب مجيب
+19	salih	7	73	صالحا	salih	person	ثمود	thamud	group	0.6883581101894378	relation	marked			وإلى ثمود أخاهم صالحا ۗ قال يا قوم اعبدوا الله ما لكم من إله غيره ۖ قد جاءتكم بينة من ربكم ۖ هذه ناقة الله لكم آية ۖ فذروها تأكل في أرض الله ۖ ولا تمسوها بسوء فيأخذكم عذاب أليم
+20	ibrahim	6	74	أبيه	azar	person	إبراهيم	ibrahim	person	0.606027352809906	relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+21	ibrahim	6	74	إبراهيم	ibrahim	person	أبيه	azar	person	0.4787235617637634	no_relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+22	ibrahim	37	85	أبيه	azar	person	قومه	ibrahim_people	group	0.4145341098308563	no_relation	marked			إذ قال لأبيه وقومه ماذا تعبدون
+23	ibrahim	21	52	أبيه	azar	person	قومه	ibrahim_people	group	0.38508802354335786	no_relation	marked			إذ قال لأبيه وقومه ما هذه التماثيل التي أنتم لها عاكفون
+24	musa	28	8	فرعون	pharaoh	person	آل فرعون	pharaoh_people	group	0.37962113320827484	no_relation	overlap_unmarked			فالتقطه آل فرعون ليكون لهم عدوا وحزنا ۗ إن فرعون وهامان وجنودهما كانوا خاطئين
+25	ibrahim	6	83	إبراهيم	ibrahim	person	قومه	ibrahim_people	group	0.35673464834690094	no_relation	marked			وتلك حجتنا آتيناها إبراهيم على قومه ۚ نرفع درجات من نشاء ۗ إن ربك حكيم عليم
+26	musa	28	38	فرعون	pharaoh	person	موسى	musa	person	0.3504980355501175	no_relation	marked			وقال فرعون يا أيها الملأ ما علمت لكم من إله غيري فأوقد لي يا هامان على الطين فاجعل لي صرحا لعلي أطلع إلى إله موسى وإني لأظنه من الكاذبين
+27	ibrahim	6	83	قومه	ibrahim_people	group	إبراهيم	ibrahim	person	0.3372259348630905	no_relation	marked			وتلك حجتنا آتيناها إبراهيم على قومه ۚ نرفع درجات من نشاء ۗ إن ربك حكيم عليم
+28	ibrahim	21	52	قومه	ibrahim_people	group	أبيه	azar	person	0.21724315881729125	no_relation	marked			إذ قال لأبيه وقومه ما هذه التماثيل التي أنتم لها عاكفون
+29	ibrahim	37	85	قومه	ibrahim_people	group	أبيه	azar	person	0.2129572831094265	no_relation	marked			إذ قال لأبيه وقومه ماذا تعبدون
+30	ibrahim	6	74	آزر	azar	person	قومك	ibrahim_people	group	0.21254224628210067	no_relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+31	ibrahim	6	74	قومك	ibrahim_people	group	آزر	azar	person	0.16725532785058023	no_relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+32	musa	28	20	الملأ	pharaoh_elite	group	موسى	musa	person	0.15310218036174775	no_relation	marked			وجاء رجل من أقصى المدينة يسعى قال يا موسى إن الملأ يأتمرون بك ليقتلوك فاخرج إني لك من الناصحين
+33	nuh	11	25	نوحا	nuh	person	قومه	nuh_people	group	0.15047752112150192	no_relation	marked			ولقد أرسلنا نوحا إلى قومه إني لكم نذير مبين
+34	musa	28	38	الملأ	pharaoh_elite	group	فرعون	pharaoh	person	0.14827087596058847	no_relation	marked			وقال فرعون يا أيها الملأ ما علمت لكم من إله غيري فأوقد لي يا هامان على الطين فاجعل لي صرحا لعلي أطلع إلى إله موسى وإني لأظنه من الكاذبين
+35	musa	28	38	الملأ	pharaoh_elite	group	موسى	musa	person	0.13837618082761766	no_relation	marked			وقال فرعون يا أيها الملأ ما علمت لكم من إله غيري فأوقد لي يا هامان على الطين فاجعل لي صرحا لعلي أطلع إلى إله موسى وإني لأظنه من الكاذبين
+36	ibrahim	6	74	إبراهيم	ibrahim	person	قومك	ibrahim_people	group	0.12814662382006645	no_relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+37	musa	28	38	فرعون	pharaoh	person	الملأ	pharaoh_elite	group	0.11150053665041923	no_relation	marked			وقال فرعون يا أيها الملأ ما علمت لكم من إله غيري فأوقد لي يا هامان على الطين فاجعل لي صرحا لعلي أطلع إلى إله موسى وإني لأظنه من الكاذبين
+38	ibrahim	6	74	قومك	ibrahim_people	group	إبراهيم	ibrahim	person	0.10920286327600479	no_relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+39	musa	20	40	موسى	musa	person	مدين	madyan	place	0.10128059089183808	no_relation	marked			إذ تمشي أختك فتقول هل أدلكم على من يكفله ۖ فرجعناك إلى أمك كي تقر عينها ولا تحزن ۚ وقتلت نفسا فنجيناك من الغم وفتناك فتونا ۚ فلبثت سنين في أهل مدين ثم جئت على قدر يا موسى
+40	musa	20	70	هارون	harun	person	السحرة	magicians	group	0.08961094617843628	no_relation	marked			فألقي السحرة سجدا قالوا آمنا برب هارون وموسى
+41	nuh	71	1	نوحا	nuh	person	قومه	nuh_people	group	0.08098013624548912	no_relation	marked			بسم الله الرحمن الرحيم إنا أرسلنا نوحا إلى قومه أن أنذر قومك من قبل أن يأتيهم عذاب أليم
+42	ibrahim	6	74	أبيه	azar	person	قومك	ibrahim_people	group	0.07669100128114223	no_relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+43	nuh	11	27	الملأ	nuh_elite	group	قومه	nuh_people	group	0.07554772160947323	no_relation	marked			فقال الملأ الذين كفروا من قومه ما نراك إلا بشرا مثلنا وما نراك اتبعك إلا الذين هم أراذلنا بادي الرأي وما نرى لكم علينا من فضل بل نظنكم كاذبين
+44	musa	28	38	موسى	musa	person	فرعون	pharaoh	person	0.06610866077244282	no_relation	marked			وقال فرعون يا أيها الملأ ما علمت لكم من إله غيري فأوقد لي يا هامان على الطين فاجعل لي صرحا لعلي أطلع إلى إله موسى وإني لأظنه من الكاذبين
+45	nuh	11	27	قومه	nuh_people	group	الملأ	nuh_elite	group	0.0621325884014368	no_relation	marked			فقال الملأ الذين كفروا من قومه ما نراك إلا بشرا مثلنا وما نراك اتبعك إلا الذين هم أراذلنا بادي الرأي وما نرى لكم علينا من فضل بل نظنكم كاذبين
+46	musa	20	70	موسى	musa	person	السحرة	magicians	group	0.06182000450789928	no_relation	marked			فألقي السحرة سجدا قالوا آمنا برب هارون وموسى
+47	musa	20	70	السحرة	magicians	group	هارون	harun	person	0.06152725145220757	no_relation	marked			فألقي السحرة سجدا قالوا آمنا برب هارون وموسى
+48	musa	28	20	موسى	musa	person	الملأ	pharaoh_elite	group	0.05576400719583034	no_relation	marked			وجاء رجل من أقصى المدينة يسعى قال يا موسى إن الملأ يأتمرون بك ليقتلوك فاخرج إني لك من الناصحين
+49	salih	7	75	صالحا	salih	person	قومه	thamud	group	0.041312179435044526	no_relation	marked			قال الملأ الذين استكبروا من قومه للذين استضعفوا لمن آمن منهم أتعلمون أن صالحا مرسل من ربه ۚ قالوا إنا بما أرسل به مؤمنون
+50	nuh	11	25	قومه	nuh_people	group	نوحا	nuh	person	0.031235328689217568	no_relation	marked			ولقد أرسلنا نوحا إلى قومه إني لكم نذير مبين
+51	musa	28	38	موسى	musa	person	الملأ	pharaoh_elite	group	0.02533868160098791	no_relation	marked			وقال فرعون يا أيها الملأ ما علمت لكم من إله غيري فأوقد لي يا هامان على الطين فاجعل لي صرحا لعلي أطلع إلى إله موسى وإني لأظنه من الكاذبين
+52	salih	7	75	قومه	thamud	group	صالحا	salih	person	0.0244085218757391	no_relation	marked			قال الملأ الذين استكبروا من قومه للذين استضعفوا لمن آمن منهم أتعلمون أن صالحا مرسل من ربه ۚ قالوا إنا بما أرسل به مؤمنون
+53	nuh	71	1	قومه	nuh_people	group	نوحا	nuh	person	0.019025034829974176	no_relation	marked			بسم الله الرحمن الرحيم إنا أرسلنا نوحا إلى قومه أن أنذر قومك من قبل أن يأتيهم عذاب أليم
+54	ibrahim	6	74	قومك	ibrahim_people	group	أبيه	azar	person	0.018757301196455956	no_relation	marked			وإذ قال إبراهيم لأبيه آزر أتتخذ أصناما آلهة ۖ إني أراك وقومك في ضلال مبين
+55	musa	20	70	السحرة	magicians	group	موسى	musa	person	0.01587522476911545	no_relation	marked			فألقي السحرة سجدا قالوا آمنا برب هارون وموسى
+56	musa	20	40	مدين	madyan	place	موسى	musa	person	0.00528385725338012	no_relation	marked			إذ تمشي أختك فتقول هل أدلكم على من يكفله ۖ فرجعناك إلى أمك كي تقر عينها ولا تحزن ۚ وقتلت نفسا فنجيناك من الغم وفتناك فتونا ۚ فلبثت سنين في أهل مدين ثم جئت على قدر يا موسى

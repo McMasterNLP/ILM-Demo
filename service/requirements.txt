@@ -1,0 +1,31 @@
+# Pinned to a resolved, import-checked set. FastAPI and SQLAdmin disagree
+# about Starlette below these versions: fastapi<0.116 caps starlette at
+# <0.39 while sqladmin needs >=0.50, which silently breaks routing.
+fastapi==0.141.1
+starlette==1.6.0
+uvicorn[standard]==0.30.6
+python-multipart==0.0.9
+pydantic==2.9.2
+pydantic-settings==2.5.2
+python-dotenv==1.0.1
+
+# database
+SQLAlchemy==2.0.35
+alembic==1.13.3
+psycopg[binary]==3.2.3
+pgvector==0.3.6
+
+# admin + ingest
+sqladmin==0.31.1
+itsdangerous==2.2.0
+pypdf==6.17.0
+
+# retrieval
+cohere==7.1.1
+
+# question generation
+google-genai==0.3.0
+
+# tests
+pytest==9.1.1
+httpx==0.28.1
